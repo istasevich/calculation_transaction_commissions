@@ -9,7 +9,7 @@ class BaseRateResponse
     ) {
     }
 
-    public function getRate(): float|int
+    public function getRate(): float
     {
         return $this->rate;
     }

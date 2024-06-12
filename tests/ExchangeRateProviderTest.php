@@ -49,7 +49,7 @@ class ExchangeRateProviderTest extends TestCase
         $this->exchangeRateProvider->execute(CurrenciesEnum::EUR->name);
         $result = $this->exchangeRateProvider->getRateResponse();
 
-        $this->assertIsInt($result->getRate());
+        $this->assertEquals(1.0, $result->getRate());
     }
 
     /**

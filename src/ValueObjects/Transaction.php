@@ -23,7 +23,7 @@ final class Transaction
         $this->validateAmount();
     }
 
-    public function getFixedAmountByRate(float|int $rate): float|int
+    public function getFixedAmountByRate(float $rate): float
     {
         if ($this->currency !== CurrenciesEnum::EUR->name && $rate > 0) {
             return $this->amount / $rate;
@@ -32,7 +32,7 @@ final class Transaction
         return $this->amount;
     }
 
-    public function calculateCommission(string $country, float|int $rate): float
+    public function calculateCommission(string $country, float $rate): float
     {
         $commission = EuroCountriesEnum::isEU($country) ? self::EU_COMMISSION : self::NOT_EU_COMMISSION;
 

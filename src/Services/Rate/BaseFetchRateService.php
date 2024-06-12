@@ -12,7 +12,7 @@ class BaseFetchRateService
     ) {
     }
 
-    public function execute(Transaction $transaction): float|int
+    public function execute(Transaction $transaction): float
     {
         $this->rateProvider->execute($transaction->currency);
 
