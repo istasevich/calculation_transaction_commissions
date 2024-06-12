@@ -39,15 +39,9 @@ class BaseFetchRateServiceTest extends TestCase
     }
 
 
-    public function testGetRateResponse()
-    {
-        $result = $this->baseFetchRateService->execute($this->transaction);
-        $this->assertInstanceOf(BaseRateResponse::class, $result);
-    }
-
     public function testGetRateDigitResponse()
     {
         $result = $this->baseFetchRateService->execute($this->transaction);
-        $this->assertIsNumeric($result->getRate());
+        $this->assertIsNumeric($result);
     }
 }

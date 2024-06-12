@@ -29,12 +29,12 @@ class CalculateTransactionsService
 
         /** @var Transaction $transactionVO */
         foreach ($transactionsCollection->getCollection() as $transactionVO) {
-            $rateResponse = $this->baseFetchRateService->execute($transactionVO);
-            $baseBinCountryResponse = $this->baseFetchBinCountryService->execute($transactionVO);
+            $rate = $this->baseFetchRateService->execute($transactionVO);
+            $countryCode = $this->baseFetchBinCountryService->execute($transactionVO);
 
             $commission = $transactionVO->calculateCommission(
-                country: $baseBinCountryResponse->getAlpha2(),
-                rate: $rateResponse->getRate()
+                country: $countryCode,
+                rate: $rate
             );
 
             echo $commission . "\n";

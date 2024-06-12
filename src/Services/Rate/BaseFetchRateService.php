@@ -3,7 +3,6 @@
 namespace App\Services\Rate;
 
 use App\Providers\Rate\RateProviderInterface;
-use App\Responses\BaseRateResponse;
 use App\ValueObjects\Transaction;
 
 class BaseFetchRateService
@@ -13,10 +12,12 @@ class BaseFetchRateService
     ) {
     }
 
-    public function execute(Transaction $transaction): BaseRateResponse
+    public function execute(Transaction $transaction): float|int
     {
         $this->rateProvider->execute($transaction->currency);
 
-        return $this->rateProvider->getRateResponse();
+        return $this->rateProvider
+            ->getRateResponse()
+            ->getRate();
     }
 }
