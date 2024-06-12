@@ -9,7 +9,7 @@ class TransactionsTest extends TestCase
     /**
      * @throws TransactionException
      */
-    public function testCalculateEurCommission()
+    public function testCalculateGbpCommission()
     {
         $transactionGbp = new Transaction(
             bin: 45717360,
@@ -29,7 +29,7 @@ class TransactionsTest extends TestCase
     /**
      * @throws TransactionException
      */
-    public function testCalculateGbpCommission()
+    public function testCalculateEurCommission()
     {
         $transactionGbp = new Transaction(
             bin: 4745030,
@@ -44,6 +44,24 @@ class TransactionsTest extends TestCase
 
         $this->assertEquals(47.62, $GBCardResult);
         $this->assertEquals(23.81, $LTCardResult);
+    }
+
+    /**
+     * @throws TransactionException
+     */
+    public function testCalculateJPYCommission()
+    {
+        $transactionGbp = new Transaction(
+            bin: 516793,
+            amount: 10000,
+            currency: 'JPY'
+        );
+
+        $rate = 169.045494;
+
+        $result = $transactionGbp->calculateCommission('JP', $rate);
+
+        $this->assertEquals(1.19, $result);
     }
 
     public function testFailureTransaction()
