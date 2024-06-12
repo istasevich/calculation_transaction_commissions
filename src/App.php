@@ -25,7 +25,5 @@ class App
         $testData = json_decode($data);
 
         $calculatingService->execute($testData);
-
-        echo $calculatingService;
     }
 }

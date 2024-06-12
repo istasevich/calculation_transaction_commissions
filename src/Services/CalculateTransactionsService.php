@@ -32,10 +32,15 @@ class CalculateTransactionsService
             $rateResponse = $this->baseFetchRateService->execute($transactionVO);
             $baseBinCountryResponse = $this->baseFetchBinCountryService->execute($transactionVO);
 
-            $this->commissions[] = $transactionVO->calculateCommission(
+            $commission = $transactionVO->calculateCommission(
                 country: $baseBinCountryResponse->getAlpha2(),
                 rate: $rateResponse->getRate()
             );
+
+            echo $commission . "\n";
+
+            //Doesn't necessarily need to be stored in memory, made for ease of testing
+            $this->commissions[] = $commission;
         }
 
         return $this->commissions;
