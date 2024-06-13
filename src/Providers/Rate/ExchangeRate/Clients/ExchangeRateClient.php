@@ -11,7 +11,6 @@ class ExchangeRateClient implements RateClientInterface
 {
     private const API_METHOD = 'GET';
     private const API_TIMEOUT = 2.0;
-
     private GuzzleClient $client;
 
     public function __construct(?GuzzleClient $client = null)
