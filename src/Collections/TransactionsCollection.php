@@ -4,6 +4,7 @@ namespace App\Collections;
 
 use App\ValueObjects\Transaction;
 use ArrayObject;
+use ArrayIterator;
 
 class TransactionsCollection extends ArrayObject implements CollectionInterface
 {
@@ -12,7 +13,7 @@ class TransactionsCollection extends ArrayObject implements CollectionInterface
         $this->append($transaction);
     }
 
-    public function getCollection(): \ArrayIterator
+    public function getCollection(): ArrayIterator
     {
         return $this->getIterator();
     }
