@@ -3,18 +3,17 @@
 namespace App\Collections;
 
 use App\ValueObjects\Transaction;
+use ArrayObject;
 
-class TransactionsCollection implements CollectionInterface
+class TransactionsCollection extends ArrayObject implements CollectionInterface
 {
-    private array $collection;
-
     public function add(Transaction $transaction): void
     {
-        $this->collection[] = $transaction;
+        $this->append($transaction);
     }
 
-    public function getCollection(): array
+    public function getCollection(): \ArrayIterator
     {
-        return $this->collection;
+        return $this->getIterator();
     }
 }
