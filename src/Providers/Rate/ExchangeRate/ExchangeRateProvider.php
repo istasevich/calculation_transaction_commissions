@@ -23,6 +23,20 @@ class ExchangeRateProvider implements RateProviderInterface
      */
     public function execute(string $currency): void
     {
+        if ($_ENV['PROVIDERS_CACHE_ENABLED']) {
+            $result = $this->getWithCache();
+        } else {
+            $result = json_decode($this->client->get(), true);
+        }
+
+        $this->baseRateResponse = new BaseRateResponse($result['rates'][$currency]);
+    }
+
+    /**
+     * @throws ExchangeRateClientException
+     */
+    private function getWithCache(): ?array
+    {
         $cacheKey = $_ENV['RATE_LIST_CACHE_NAME'];
 
         if ( ! $this->cacheService->get($cacheKey)) {
@@ -30,9 +44,7 @@ class ExchangeRateProvider implements RateProviderInterface
             $this->cacheService->ensure($cacheKey, $clientResult);
         }
 
-        $result = $this->cacheService->get($cacheKey);
-
-        $this->baseRateResponse = new BaseRateResponse($result['rates'][$currency]);
+        return $this->cacheService->get($cacheKey);
     }
 
     public function getRateResponse(): BaseRateResponse

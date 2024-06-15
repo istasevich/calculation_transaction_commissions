@@ -23,12 +23,11 @@ class BinListProvider implements BinProviderInterface
      */
     public function execute(int $bin): void
     {
-        if ( ! $this->cacheService->get($bin)) {
-            $clientResult = $this->binClient->get($bin);
-            $this->cacheService->ensure($bin, $clientResult);
+        if ($_ENV['PROVIDERS_CACHE_ENABLED']) {
+            $result = $this->getWithCache($bin);
+        } else {
+            $result = json_decode($this->binClient->get($bin), true);
         }
-
-        $result = $this->cacheService->get($bin);
 
         if ($result['country']) {
             $this->binCountryResponse = new BaseBinCountryResponse(
@@ -36,6 +35,19 @@ class BinListProvider implements BinProviderInterface
                 alpha2:  $result['country']['alpha2'] ?? ''
             );
         }
+    }
+
+    /**
+     * @throws BinClientException
+     */
+    private function getWithCache(string $bin): ?array
+    {
+        if ( ! $this->cacheService->get($bin)) {
+            $clientResult = $this->binClient->get($bin);
+            $this->cacheService->ensure($bin, $clientResult);
+        }
+
+        return $this->cacheService->get($bin);
     }
 
     public function getBinCountryResponse(): BaseBinCountryResponse
