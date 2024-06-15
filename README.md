@@ -31,7 +31,7 @@ php index.php
  ./vendor/bin/phpunit 
 ```
 
-Main class for calculation: ```bash src/Services/CalculateTransactionsService ```
+Main class for calculation: ``` src/Services/CalculateTransactionsService ```
 
 ## Providers folder
 For each external BIN search service, a BinListProvider is implemented, which must be implemented from the BinProviderInterface interface
@@ -39,7 +39,7 @@ For each external BIN search service, a BinListProvider is implemented, which mu
 If you want to change the test result of the service provider, you can replace it in the src/Config/DIConfig :
 
 ```php
-binProvider' => create(BinListProvider::class)->constructor(DI\get('binClient'))
+'binProvider' => create(BinListProvider::class)->constructor(DI\get('binClient'))
 #TO
 'binProvider' => create(LocalBinTestProvider::class)
 
