@@ -31,6 +31,8 @@ php index.php
  ./vendor/bin/phpunit 
 ```
 
+Main class for calculation: ```bash src/Services/CalculateTransactionsService ```
+
 ## Providers folder
 For each external BIN search service, a BinListProvider is implemented, which must be implemented from the BinProviderInterface interface
 
