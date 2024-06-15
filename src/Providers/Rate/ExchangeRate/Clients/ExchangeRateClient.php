@@ -21,12 +21,11 @@ class ExchangeRateClient implements RateClientInterface
     /**
      * @throws ExchangeRateClientException
      */
-    public function get(): mixed
+    public function get(): string
     {
         try {
-            $result = $this->client->request(self::API_METHOD)->getBody()
+            return $this->client->request(self::API_METHOD)->getBody()
                 ->getContents();
-            return json_decode($result, true);
         } catch (GuzzleException $e) {
             throw new ExchangeRateClientException($e->getMessage());
         }

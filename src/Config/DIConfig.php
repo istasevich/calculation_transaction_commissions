@@ -8,6 +8,7 @@ use App\Providers\Bin\Local\LocalBinTestProvider;
 use App\Providers\Rate\ExchangeRate\Clients\ExchangeRateClient;
 use App\Providers\Rate\ExchangeRate\ExchangeRateProvider;
 use App\Services\Bin\BaseFetchBinCountryService;
+use App\Services\Cache\FileCacheService;
 use App\Services\CalculateTransactionsService;
 
 use App\Services\Rate\BaseFetchRateService;
@@ -16,14 +17,22 @@ use function DI\create;
 
 return [
     //Exchange Provider implementation
-    'rateClient'=> create(ExchangeRateClient::class),
-    ExchangeRateProvider::class => create()->constructor(DI\get('rateClient')),
+    'rateClient' => create(ExchangeRateClient::class),
+    'cacheRateService' => create(FileCacheService::class)->constructor('cacheRate'),
+    ExchangeRateProvider::class => create()->constructor(
+        DI\get('rateClient'),
+        DI\get('cacheRateService')
+    ),
     BaseFetchRateService::class => create()->constructor(Di\get(ExchangeRateProvider::class)),
 
     //BinList Provider implementation
     //If resulted in a `429 Too Many Requests` response% try to use binProvider => LocalBinTestProvider::class
     'binClient' => create(BinListClient::class),
-    'binProvider' => create(BinListProvider::class)->constructor(DI\get('binClient')),
+    'cacheBinService' => create(FileCacheService::class)->constructor('binList'),
+    'binProvider' => create(BinListProvider::class)->constructor(
+        DI\get('binClient'),
+        DI\get('cacheBinService')
+    ),
     //'binProvider' => create(LocalBinTestProvider::class), //For tests
     BaseFetchBinCountryService::class => create()->constructor(Di\get('binProvider')),
 

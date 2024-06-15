@@ -6,13 +6,15 @@ use App\Exceptions\BinClientException;
 use App\Providers\Bin\BinClientInterface;
 use App\Providers\Bin\BinProviderInterface;
 use App\Responses\BaseBinCountryResponse;
+use App\Services\Cache\CacheServiceInterface;
 
 class BinListProvider implements BinProviderInterface
 {
     private BaseBinCountryResponse $binCountryResponse;
 
     public function __construct(
-        private readonly BinClientInterface $binClient
+        private readonly BinClientInterface $binClient,
+        private readonly CacheServiceInterface $cacheService
     ) {
     }
 
@@ -21,7 +23,12 @@ class BinListProvider implements BinProviderInterface
      */
     public function execute(int $bin): void
     {
-        $result = $this->binClient->get($bin);
+        if ( ! $this->cacheService->get($bin)) {
+            $clientResult = $this->binClient->get($bin);
+            $this->cacheService->ensure($bin, $clientResult);
+        }
+
+        $result = $this->cacheService->get($bin);
 
         if ($result['country']) {
             $this->binCountryResponse = new BaseBinCountryResponse(
