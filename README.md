@@ -1,6 +1,9 @@
 # Transactions Commission
 
+Given a task to refactor ugly code: [task description](https://github.com/istasevich/calculation_transaction_commissions/blob/main/Task.md)
+
 The idea is to calculate commissions from ready-made transactions from a json file as flexibly and structuredly as possible
+
 
 !NOTE: If it seems like an overhead for a given task, in reality the code can be simplified, but this is to show a possible use case in certain cases
 
