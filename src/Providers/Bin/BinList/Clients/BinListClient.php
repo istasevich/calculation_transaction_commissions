@@ -4,21 +4,23 @@ namespace App\Providers\Bin\BinList\Clients;
 
 use App\Exceptions\BinClientException;
 use App\Providers\Bin\BinClientInterface;
+use App\Providers\Clients\BaseClient;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\GuzzleException;
 
-class BinListClient implements BinClientInterface
+class BinListClient extends BaseClient implements BinClientInterface
 {
     private const API_VERSION_HEADER = 'Accept-Version';
     private const API_VERSION = '3';
     private const API_METHOD = 'POST';
-    private const API_TIMEOUT = 2.0;
 
     private GuzzleClient $client;
 
     public function __construct(?GuzzleClient $client = null)
     {
-        $this->client = $client === null ? $this->createClient() : $client;
+        $url = $_ENV['BIN_LIST_API_URL'];
+        $headers = [self::API_VERSION_HEADER => self::API_VERSION];
+        $this->client = $client === null ? $this->createClient($url, $headers) : $client;
     }
 
     /**
@@ -35,17 +37,5 @@ class BinListClient implements BinClientInterface
         } catch (GuzzleException $e) {
             throw new BinClientException($e->getMessage());
         }
-    }
-
-    private function createClient(): GuzzleClient
-    {
-        return new GuzzleClient(
-            [
-                'base_uri' => $_ENV['BIN_LIST_API_URL'],
-                'timeout'  => self::API_TIMEOUT,
-                'allow_redirects' => false,
-                'headers' => [self::API_VERSION_HEADER => self::API_VERSION]
-            ]
-        );
     }
 }
