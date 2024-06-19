@@ -26,13 +26,12 @@ class BinListClient extends BaseClient implements BinClientInterface
     /**
      * @throws BinClientException
      */
-    public function get(string $bin): mixed
+    public function get(string $bin): string
     {
         try {
-            $result = $this->client->request(self::API_METHOD, $bin)->getBody()
+            return $this->client->request(self::API_METHOD, $bin)
+                ->getBody()
                 ->getContents();
-
-            return json_decode($result, true);
 
         } catch (GuzzleException $e) {
             throw new BinClientException($e->getMessage());
